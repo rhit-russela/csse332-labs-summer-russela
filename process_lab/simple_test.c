@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define simple_assert(message, test)                                           \
   do {                                                                         \
@@ -12,6 +14,7 @@
 #define DATA_SIZE 100
 #define INITIAL_VALUE 77
 #define MAX_TESTS 10
+pid_t pid;
 
 /* test_funcs is an array of function pointers that store all of the test we
  * would like to run. */
@@ -58,6 +61,27 @@ void setup(void) {
  * Run all the test in the test suite.
  */
 void run_all_tests() { /* TODO: Add your code here. */
+
+  int status;
+       
+  for(int j = 0; j < num_tests; j++){
+    setup();
+    pid = fork();
+    
+    if(pid == 0){
+     
+      
+      char* tresult = test_funcs[j]();
+      if(tresult == TEST_PASSED){
+      	exit(0);
+      }else{
+	exit(1);
+      }
+      // exit(0);
+    
+  }
+  }
+
 }
 
 char *test1() {
@@ -148,4 +172,18 @@ int main(int argc, char **argv) {
   /* add_test(test4); */
   /* add_test(test5); */
   run_all_tests();
+
+  int status;
+  pid_t pid2 = getpid();
+   for(int i = 0; i < num_tests; i++){
+    if(pid2 != 0){
+      while(wait(&status) > 0){
+        if(WIFEXITED(status) && WEXITSTATUS(status) == 0){
+          printf("Test Passed\n");
+        }else if(WIFEXITED(status)){
+          printf("Test Failed\n");
+        }
+      }
+    }
+   }
 }
