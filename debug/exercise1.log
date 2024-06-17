@@ -1,0 +1,1138 @@
++n
+The program is not being run.
++trace-run
+[*] No debugging session active
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=0x1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x00005555555552b8  →  <++++info symbol 0x5555555552b8
+main+75> mov DWORD PTR [rdx], eax
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000000000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x5555555552ae <+++info symbol 0x5555555552ae
+main+65> shl    rax, 0x2
+   0x5555555552b2 <+++info symbol 0x5555555552b2
+main+69> add    rdx, rax
+   0x5555555552b5 <+++info symbol 0x5555555552b5
+main+72> mov    eax, DWORD PTR [rbp-0x10]
+ → 0x5555555552b8 <++++info symbol 0x5555555552b8
+main+75> mov    DWORD PTR [rdx], eax
+   0x5555555552ba <+++info symbol 0x5555555552ba
+main+77> add    DWORD PTR [rbp-0x10], 0x1
+   0x5555555552be <+++info symbol 0x5555555552be
+main+81> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552c2 <+++info symbol 0x5555555552c2
+main+85> mov    eax, DWORD PTR [rax+0x10]
+   0x5555555552c5 <+++info symbol 0x5555555552c5
+main+88> cmp    DWORD PTR [rbp-0x10], eax
+   0x5555555552c8 <+++info symbol 0x5555555552c8
+main+91> jl     0x5555555552a1 <main+52>
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+77 ────
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+     76	   for(int i = 0; i < al->size; i++) {
+             // i=0x0, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+ →   77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+     82	     printf("%d ", al->array[i]);
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x5555555552b8 in main (), reason: SIGSEGV
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x5555555552b8 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++n
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=0x1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x00005555555552b8  →  <++++info symbol 0x5555555552b8
+main+75> mov DWORD PTR [rdx], eax
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000000000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x5555555552ae <+++info symbol 0x5555555552ae
+main+65> shl    rax, 0x2
+   0x5555555552b2 <+++info symbol 0x5555555552b2
+main+69> add    rdx, rax
+   0x5555555552b5 <+++info symbol 0x5555555552b5
+main+72> mov    eax, DWORD PTR [rbp-0x10]
+ → 0x5555555552b8 <++++info symbol 0x5555555552b8
+main+75> mov    DWORD PTR [rdx], eax
+   0x5555555552ba <+++info symbol 0x5555555552ba
+main+77> add    DWORD PTR [rbp-0x10], 0x1
+   0x5555555552be <+++info symbol 0x5555555552be
+main+81> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552c2 <+++info symbol 0x5555555552c2
+main+85> mov    eax, DWORD PTR [rax+0x10]
+   0x5555555552c5 <+++info symbol 0x5555555552c5
+main+88> cmp    DWORD PTR [rbp-0x10], eax
+   0x5555555552c8 <+++info symbol 0x5555555552c8
+main+91> jl     0x5555555552a1 <main+52>
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+77 ────
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+     76	   for(int i = 0; i < al->size; i++) {
+             // i=0x0, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+ →   77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+     82	     printf("%d ", al->array[i]);
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x5555555552b8 in main (), reason: SIGSEGV
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x5555555552b8 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++s
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=0x1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x00005555555552b8  →  <++++info symbol 0x5555555552b8
+main+75> mov DWORD PTR [rdx], eax
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000000000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x5555555552ae <+++info symbol 0x5555555552ae
+main+65> shl    rax, 0x2
+   0x5555555552b2 <+++info symbol 0x5555555552b2
+main+69> add    rdx, rax
+   0x5555555552b5 <+++info symbol 0x5555555552b5
+main+72> mov    eax, DWORD PTR [rbp-0x10]
+ → 0x5555555552b8 <++++info symbol 0x5555555552b8
+main+75> mov    DWORD PTR [rdx], eax
+   0x5555555552ba <+++info symbol 0x5555555552ba
+main+77> add    DWORD PTR [rbp-0x10], 0x1
+   0x5555555552be <+++info symbol 0x5555555552be
+main+81> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552c2 <+++info symbol 0x5555555552c2
+main+85> mov    eax, DWORD PTR [rax+0x10]
+   0x5555555552c5 <+++info symbol 0x5555555552c5
+main+88> cmp    DWORD PTR [rbp-0x10], eax
+   0x5555555552c8 <+++info symbol 0x5555555552c8
+main+91> jl     0x5555555552a1 <main+52>
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+77 ────
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+     76	   for(int i = 0; i < al->size; i++) {
+             // i=0x0, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+ →   77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+     82	     printf("%d ", al->array[i]);
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x5555555552b8 in main (), reason: SIGSEGV
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x5555555552b8 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++b 76
+Breakpoint 1 at 0x555555555298: file al.c, line 76.
++n
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, main (argc=0x1, argv=0x7fffffffdcd8) at al.c:76
+76	  for(int i = 0; i < al->size; i++) {
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x10              
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x0000555555555298  →  <++++info symbol 0x555555555298
+main+43> mov DWORD PTR [rbp-0x10], 0x0
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000001000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x55555555528c <+++info symbol 0x55555555528c
+main+31> mov    rdi, rax
+   0x55555555528f <+++info symbol 0x55555555528f
+main+34> call   0x555555555209 <alloc_al>
+   0x555555555294 <+++info symbol 0x555555555294
+main+39> mov    QWORD PTR [rbp-0x8], rax
+ → 0x555555555298 <++++info symbol 0x555555555298
+main+43> mov    DWORD PTR [rbp-0x10], 0x0
+   0x55555555529f <+++info symbol 0x55555555529f
+main+50> jmp    0x5555555552be <main+81>
+   0x5555555552a1 <+++info symbol 0x5555555552a1
+main+52> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552a5 <+++info symbol 0x5555555552a5
+main+56> mov    rdx, QWORD PTR [rax+0x18]
+   0x5555555552a9 <+++info symbol 0x5555555552a9
+main+60> mov    eax, DWORD PTR [rbp-0x10]
+   0x5555555552ac <+++info symbol 0x5555555552ac
+main+63> cdqe   
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+76 ────
+     71	   */
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+                    // i=0x1000, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+●→   76	   for(int i = 0; i < al->size; i++) {
+     77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x555555555298 in main (), reason: BREAKPOINT
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x555555555298 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++continue
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=0x1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x00005555555552b8  →  <++++info symbol 0x5555555552b8
+main+75> mov DWORD PTR [rdx], eax
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000000000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x5555555552ae <+++info symbol 0x5555555552ae
+main+65> shl    rax, 0x2
+   0x5555555552b2 <+++info symbol 0x5555555552b2
+main+69> add    rdx, rax
+   0x5555555552b5 <+++info symbol 0x5555555552b5
+main+72> mov    eax, DWORD PTR [rbp-0x10]
+ → 0x5555555552b8 <++++info symbol 0x5555555552b8
+main+75> mov    DWORD PTR [rdx], eax
+   0x5555555552ba <+++info symbol 0x5555555552ba
+main+77> add    DWORD PTR [rbp-0x10], 0x1
+   0x5555555552be <+++info symbol 0x5555555552be
+main+81> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552c2 <+++info symbol 0x5555555552c2
+main+85> mov    eax, DWORD PTR [rax+0x10]
+   0x5555555552c5 <+++info symbol 0x5555555552c5
+main+88> cmp    DWORD PTR [rbp-0x10], eax
+   0x5555555552c8 <+++info symbol 0x5555555552c8
+main+91> jl     0x5555555552a1 <main+52>
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+77 ────
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+●    76	   for(int i = 0; i < al->size; i++) {
+             // i=0x0, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+ →   77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+     82	     printf("%d ", al->array[i]);
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x5555555552b8 in main (), reason: SIGSEGV
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x5555555552b8 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++continue
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, main (argc=0x1, argv=0x7fffffffdcd8) at al.c:76
+76	  for(int i = 0; i < al->size; i++) {
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x10              
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x0000555555555298  →  <++++info symbol 0x555555555298
+main+43> mov DWORD PTR [rbp-0x10], 0x0
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000001000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x55555555528c <+++info symbol 0x55555555528c
+main+31> mov    rdi, rax
+   0x55555555528f <+++info symbol 0x55555555528f
+main+34> call   0x555555555209 <alloc_al>
+   0x555555555294 <+++info symbol 0x555555555294
+main+39> mov    QWORD PTR [rbp-0x8], rax
+ → 0x555555555298 <++++info symbol 0x555555555298
+main+43> mov    DWORD PTR [rbp-0x10], 0x0
+   0x55555555529f <+++info symbol 0x55555555529f
+main+50> jmp    0x5555555552be <main+81>
+   0x5555555552a1 <+++info symbol 0x5555555552a1
+main+52> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552a5 <+++info symbol 0x5555555552a5
+main+56> mov    rdx, QWORD PTR [rax+0x18]
+   0x5555555552a9 <+++info symbol 0x5555555552a9
+main+60> mov    eax, DWORD PTR [rbp-0x10]
+   0x5555555552ac <+++info symbol 0x5555555552ac
+main+63> cdqe   
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+76 ────
+     71	   */
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+                    // i=0x1000, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+●→   76	   for(int i = 0; i < al->size; i++) {
+     77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x555555555298 in main (), reason: BREAKPOINT
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x555555555298 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++until 80
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=0x1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x00005555555552b8  →  <++++info symbol 0x5555555552b8
+main+75> mov DWORD PTR [rdx], eax
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000000000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x5555555552ae <+++info symbol 0x5555555552ae
+main+65> shl    rax, 0x2
+   0x5555555552b2 <+++info symbol 0x5555555552b2
+main+69> add    rdx, rax
+   0x5555555552b5 <+++info symbol 0x5555555552b5
+main+72> mov    eax, DWORD PTR [rbp-0x10]
+ → 0x5555555552b8 <++++info symbol 0x5555555552b8
+main+75> mov    DWORD PTR [rdx], eax
+   0x5555555552ba <+++info symbol 0x5555555552ba
+main+77> add    DWORD PTR [rbp-0x10], 0x1
+   0x5555555552be <+++info symbol 0x5555555552be
+main+81> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552c2 <+++info symbol 0x5555555552c2
+main+85> mov    eax, DWORD PTR [rax+0x10]
+   0x5555555552c5 <+++info symbol 0x5555555552c5
+main+88> cmp    DWORD PTR [rbp-0x10], eax
+   0x5555555552c8 <+++info symbol 0x5555555552c8
+main+91> jl     0x5555555552a1 <main+52>
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+77 ────
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+●    76	   for(int i = 0; i < al->size; i++) {
+             // i=0x0, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+ →   77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+     82	     printf("%d ", al->array[i]);
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x5555555552b8 in main (), reason: SIGSEGV
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x5555555552b8 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, main (argc=0x1, argv=0x7fffffffdcd8) at al.c:76
+76	  for(int i = 0; i < al->size; i++) {
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x10              
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x0000555555555298  →  <++++info symbol 0x555555555298
+main+43> mov DWORD PTR [rbp-0x10], 0x0
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000001000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x55555555528c <+++info symbol 0x55555555528c
+main+31> mov    rdi, rax
+   0x55555555528f <+++info symbol 0x55555555528f
+main+34> call   0x555555555209 <alloc_al>
+   0x555555555294 <+++info symbol 0x555555555294
+main+39> mov    QWORD PTR [rbp-0x8], rax
+ → 0x555555555298 <++++info symbol 0x555555555298
+main+43> mov    DWORD PTR [rbp-0x10], 0x0
+   0x55555555529f <+++info symbol 0x55555555529f
+main+50> jmp    0x5555555552be <main+81>
+   0x5555555552a1 <+++info symbol 0x5555555552a1
+main+52> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552a5 <+++info symbol 0x5555555552a5
+main+56> mov    rdx, QWORD PTR [rax+0x18]
+   0x5555555552a9 <+++info symbol 0x5555555552a9
+main+60> mov    eax, DWORD PTR [rbp-0x10]
+   0x5555555552ac <+++info symbol 0x5555555552ac
+main+63> cdqe   
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+76 ────
+     71	   */
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+                    // i=0x1000, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+●→   76	   for(int i = 0; i < al->size; i++) {
+     77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x555555555298 in main (), reason: BREAKPOINT
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x555555555298 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++info local
+i = 0x1000
+al = 0x5555555592a0
++where
+#0  main (argc=0x1, argv=0x7fffffffdcd8) at al.c:76
++b 76
+Note: breakpoint 1 also set at pc 0x555555555298.
+Breakpoint 2 at 0x555555555298: file al.c, line 76.
++clear 76
+Deleted breakpoints 1 2 
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=0x1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdba0
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdba0  →  0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$rbp   : 0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x00005555555552b8  →  <++++info symbol 0x5555555552b8
+main+75> mov DWORD PTR [rdx], eax
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdba0│+0x0000: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"	 ← $rsp
+0x00007fffffffdba8│+0x0008: 0x0000000100000064 ("d"?)
+0x00007fffffffdbb0│+0x0010: 0x0000000000000000
+0x00007fffffffdbb8│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdbc0│+0x0020: 0x0000000000000001	 ← $rbp
+0x00007fffffffdbc8│+0x0028: 0x00007ffff7db2d90  →  <++++info symbol 0x7ffff7db2d90
+__libc_start_call_main+128> mov edi, eax
+0x00007fffffffdbd0│+0x0030: 0x0000000000000000
+0x00007fffffffdbd8│+0x0038: 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x5555555552ae <+++info symbol 0x5555555552ae
+main+65> shl    rax, 0x2
+   0x5555555552b2 <+++info symbol 0x5555555552b2
+main+69> add    rdx, rax
+   0x5555555552b5 <+++info symbol 0x5555555552b5
+main+72> mov    eax, DWORD PTR [rbp-0x10]
+ → 0x5555555552b8 <++++info symbol 0x5555555552b8
+main+75> mov    DWORD PTR [rdx], eax
+   0x5555555552ba <+++info symbol 0x5555555552ba
+main+77> add    DWORD PTR [rbp-0x10], 0x1
+   0x5555555552be <+++info symbol 0x5555555552be
+main+81> mov    rax, QWORD PTR [rbp-0x8]
+   0x5555555552c2 <+++info symbol 0x5555555552c2
+main+85> mov    eax, DWORD PTR [rax+0x10]
+   0x5555555552c5 <+++info symbol 0x5555555552c5
+main+88> cmp    DWORD PTR [rbp-0x10], eax
+   0x5555555552c8 <+++info symbol 0x5555555552c8
+main+91> jl     0x5555555552a1 <main+52>
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+77 ────
+     72	 int main(int argc, char **argv) {
+     73	   struct array_list *al = alloc_al("list", 16);
+     74	 
+     75	   // initialize the array list
+     76	   for(int i = 0; i < al->size; i++) {
+             // i=0x0, al=0x00007fffffffdbb8  →  [...]  →  0x000000007473696c ("list"?)
+ →   77	     al->array[i] = i;
+     78	   }
+     79	 
+     80	   // print it out
+     81	   for(int i = 0; i < al->size; i++) {
+     82	     printf("%d ", al->array[i]);
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x5555555552b8 in main (), reason: SIGSEGV
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x5555555552b8 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++continue
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
++q
++b 50
+Breakpoint 1 at 0x121c: file al.c, line 50.
++continue
+The program is not being run.
++r
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, alloc_al (name=0x55555555603e "list", size=0x10) at al.c:50
+50	  struct array_list *al = malloc(sizeof(struct array_list));
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdb70
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rbx   : 0x0               
+$rcx   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$rdx   : 0x00007fffffffdce8  →  0x00007fffffffdf87  →  "SHELL=/bin/bash"
+$rsp   : 0x00007fffffffdb70  →  0x00000010000006f0
+$rbp   : 0x00007fffffffdb90  →  0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x10              
+$rdi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rip   : 0x000055555555521c  →  <++++info symbol 0x55555555521c
+alloc_al+19> mov edi, 0x20
+$r8    : 0x00007ffff7fa4f10  →  0x0000000000000004
+$r9    : 0x00007ffff7fc9040  →  <++++info symbol 0x7ffff7fc9040
+_dl_fini+0> endbr64 
+$r10   : 0x00007ffff7fc3908  →  0x000d00120000000e
+$r11   : 0x00007ffff7fde660  →  <++++info symbol 0x7ffff7fde660
+_dl_audit_preinit+0> endbr64 
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [zero carry parity adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdb70│+0x0000: 0x00000010000006f0	 ← $rsp
+0x00007fffffffdb78│+0x0008: 0x000055555555603e  →  0x206425007473696c ("list"?)
+0x00007fffffffdb80│+0x0010: 0x00007ffff7fc1000  →  0x00010102464c457f
+0x00007fffffffdb88│+0x0018: 0x0000010101000000
+0x00007fffffffdb90│+0x0020: 0x00007fffffffdbc0  →  0x0000000000000001	 ← $rbp
+0x00007fffffffdb98│+0x0028: 0x0000555555555294  →  <++++info symbol 0x555555555294
+main+39> mov QWORD PTR [rbp-0x8], rax
+0x00007fffffffdba0│+0x0030: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+0x00007fffffffdba8│+0x0038: 0x0000000100000064 ("d"?)
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x555555555211 <+++info symbol 0x555555555211
+alloc_al+8> sub    rsp, 0x20
+   0x555555555215 <+++info symbol 0x555555555215
+alloc_al+12> mov    QWORD PTR [rbp-0x18], rdi
+   0x555555555219 <+++info symbol 0x555555555219
+alloc_al+16> mov    DWORD PTR [rbp-0x1c], esi
+ → 0x55555555521c <++++info symbol 0x55555555521c
+alloc_al+19> mov    edi, 0x20
+   0x555555555221 <+++info symbol 0x555555555221
+alloc_al+24> call   0x5555555550f0 <malloc@plt>
+   0x555555555226 <+++info symbol 0x555555555226
+alloc_al+29> mov    QWORD PTR [rbp-0x8], rax
+   0x55555555522a <+++info symbol 0x55555555522a
+alloc_al+33> cmp    QWORD PTR [rbp-0x8], 0x0
+   0x55555555522f <+++info symbol 0x55555555522f
+alloc_al+38> jne    0x55555555524a <alloc_al+65>
+   0x555555555231 <+++info symbol 0x555555555231
+alloc_al+40> lea    rax, [rip+0xdd0]        # 0x555555556008
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+50 ────
+     45	   * The code below contains ONE crucial bug. Use gdb to find the bug and fix
+     46	   * it.
+     47	   */
+     48	 struct array_list *alloc_al(const char *name, int size)
+     49	 {
+                    // al=0x00007fffffffdb88  →  0x0000010101000000
+●→   50	   struct array_list *al = malloc(sizeof(struct array_list));
+     51	   if(!al) {
+     52	     perror("PANIC: malloc failed, we didn't learn what to do here");
+     53	     exit(EXIT_FAILURE);
+     54	   }
+     55	 
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x55555555521c in alloc_al (), reason: BREAKPOINT
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x55555555521c → alloc_al(name=0x55555555603e "list", size=0x10)
+[#1] 0x555555555294 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++b 54
+Breakpoint 2 at 0x55555555524a: file al.c, line 56.
++continue 
+Continuing.
+
+Breakpoint 2, alloc_al (name=0x55555555603e "list", size=0x10) at al.c:56
+56	  strcpy(al->name, name);
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdb70
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x00005555555592a0  →  0x0000000000000000
+$rbx   : 0x0               
+$rcx   : 0x31              
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdb70  →  0x00000010000006f0
+$rbp   : 0x00007fffffffdb90  →  0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x00005555555592c0  →  0x0000000000000000
+$rdi   : 0x0               
+$rip   : 0x000055555555524a  →  <++++info symbol 0x55555555524a
+alloc_al+65> mov rax, QWORD PTR [rbp-0x8]
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x0000000000000000
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [zero carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdb70│+0x0000: 0x00000010000006f0	 ← $rsp
+0x00007fffffffdb78│+0x0008: 0x000055555555603e  →  0x206425007473696c ("list"?)
+0x00007fffffffdb80│+0x0010: 0x00007ffff7fc1000  →  0x00010102464c457f
+0x00007fffffffdb88│+0x0018: 0x00005555555592a0  →  0x0000000000000000
+0x00007fffffffdb90│+0x0020: 0x00007fffffffdbc0  →  0x0000000000000001	 ← $rbp
+0x00007fffffffdb98│+0x0028: 0x0000555555555294  →  <++++info symbol 0x555555555294
+main+39> mov QWORD PTR [rbp-0x8], rax
+0x00007fffffffdba0│+0x0030: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+0x00007fffffffdba8│+0x0038: 0x0000000100000064 ("d"?)
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x55555555523b <+++info symbol 0x55555555523b
+alloc_al+50> call   0x555555555100 <perror@plt>
+   0x555555555240 <+++info symbol 0x555555555240
+alloc_al+55> mov    edi, 0x1
+   0x555555555245 <+++info symbol 0x555555555245
+alloc_al+60> call   0x555555555110 <exit@plt>
+ → 0x55555555524a <++++info symbol 0x55555555524a
+alloc_al+65> mov    rax, QWORD PTR [rbp-0x8]
+   0x55555555524e <+++info symbol 0x55555555524e
+alloc_al+69> mov    rdx, QWORD PTR [rbp-0x18]
+   0x555555555252 <+++info symbol 0x555555555252
+alloc_al+73> mov    rsi, rdx
+   0x555555555255 <+++info symbol 0x555555555255
+alloc_al+76> mov    rdi, rax
+   0x555555555258 <+++info symbol 0x555555555258
+alloc_al+79> call   0x5555555550d0 <strcpy@plt>
+   0x55555555525d <+++info symbol 0x55555555525d
+alloc_al+84> mov    rax, QWORD PTR [rbp-0x8]
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+56 ────
+     51	   if(!al) {
+     52	     perror("PANIC: malloc failed, we didn't learn what to do here");
+     53	     exit(EXIT_FAILURE);
+●    54	   }
+     55	 
+           // name=0x00007fffffffdb78  →  [...]  →  0x206425007473696c ("list"?), al=0x00007fffffffdb88  →  [...]  →  0x0000000000000000
+ →   56	   strcpy(al->name, name);
+     57	   al->size = size;
+     58	 
+     59	   return al;
+     60	 }
+     61	 
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x55555555524a in alloc_al (), reason: BREAKPOINT
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x55555555524a → alloc_al(name=0x55555555603e "list", size=0x10)
+[#1] 0x555555555294 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++info local
+al = 0x5555555592a0
++n
+57	  al->size = size;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdb70
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x4               
+$rsp   : 0x00007fffffffdb70  →  0x00000010000006f0
+$rbp   : 0x00007fffffffdb90  →  0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x000055555555525d  →  <++++info symbol 0x55555555525d
+alloc_al+84> mov rax, QWORD PTR [rbp-0x8]
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdb70│+0x0000: 0x00000010000006f0	 ← $rsp
+0x00007fffffffdb78│+0x0008: 0x000055555555603e  →  0x206425007473696c ("list"?)
+0x00007fffffffdb80│+0x0010: 0x00007ffff7fc1000  →  0x00010102464c457f
+0x00007fffffffdb88│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdb90│+0x0020: 0x00007fffffffdbc0  →  0x0000000000000001	 ← $rbp
+0x00007fffffffdb98│+0x0028: 0x0000555555555294  →  <++++info symbol 0x555555555294
+main+39> mov QWORD PTR [rbp-0x8], rax
+0x00007fffffffdba0│+0x0030: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+0x00007fffffffdba8│+0x0038: 0x0000000100000064 ("d"?)
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x555555555252 <+++info symbol 0x555555555252
+alloc_al+73> mov    rsi, rdx
+   0x555555555255 <+++info symbol 0x555555555255
+alloc_al+76> mov    rdi, rax
+   0x555555555258 <+++info symbol 0x555555555258
+alloc_al+79> call   0x5555555550d0 <strcpy@plt>
+ → 0x55555555525d <++++info symbol 0x55555555525d
+alloc_al+84> mov    rax, QWORD PTR [rbp-0x8]
+   0x555555555261 <+++info symbol 0x555555555261
+alloc_al+88> mov    edx, DWORD PTR [rbp-0x1c]
+   0x555555555264 <+++info symbol 0x555555555264
+alloc_al+91> mov    DWORD PTR [rax+0x10], edx
+   0x555555555267 <+++info symbol 0x555555555267
+alloc_al+94> mov    rax, QWORD PTR [rbp-0x8]
+   0x55555555526b <+++info symbol 0x55555555526b
+alloc_al+98> leave  
+   0x55555555526c <+++info symbol 0x55555555526c
+alloc_al+99> ret    
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+57 ────
+     52	     perror("PANIC: malloc failed, we didn't learn what to do here");
+     53	     exit(EXIT_FAILURE);
+●    54	   }
+     55	 
+     56	   strcpy(al->name, name);
+           // size=0x10, al=0x00007fffffffdb88  →  [...]  →  0x000000007473696c ("list"?)
+ →   57	   al->size = size;
+     58	 
+     59	   return al;
+     60	 }
+     61	 
+     62	 /**
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x55555555525d in alloc_al (), reason: SINGLE STEP
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x55555555525d → alloc_al(name=0x55555555603e "list", size=0x10)
+[#1] 0x555555555294 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++info local
+al = 0x5555555592a0
++n
+59	  return al;
+++context
++++shell clear -x
++++registers $rax $rbx $rcx $rdx $rsp $rbp $rsi $rdi $rip $r8 $r9 $r10 $r11 $r12 $r13 $r14 $r15 $eflags $cs $ss $ds $es $fs $gs
++++dereference -l 8 0x7fffffffdb70
+[ Legend: Modified register | Code | Heap | Stack | String ]
+────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rbx   : 0x0               
+$rcx   : 0x747369          
+$rdx   : 0x10              
+$rsp   : 0x00007fffffffdb70  →  0x00000010000006f0
+$rbp   : 0x00007fffffffdb90  →  0x00007fffffffdbc0  →  0x0000000000000001
+$rsi   : 0x000055555555603e  →  0x206425007473696c ("list"?)
+$rdi   : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$rip   : 0x0000555555555267  →  <++++info symbol 0x555555555267
+alloc_al+94> mov rax, QWORD PTR [rbp-0x8]
+$r8    : 0x21001           
+$r9    : 0x00005555555592a0  →  0x000000007473696c ("list"?)
+$r10   : 0xfffffffffffff000
+$r11   : 0x00007ffff7fa3ce0  →  0x00005555555592c0  →  0x0000000000000000
+$r12   : 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+$r13   : 0x000055555555526d  →  <++++info symbol 0x55555555526d
+main+0> endbr64 
+$r14   : 0x0000555555557d90  →  0x00005555555551c0  →  <++++info symbol 0x5555555551c0
+__do_global_dtors_aux+0> endbr64 
+$r15   : 0x00007ffff7ffd040  →  0x00007ffff7ffe2e0  →  0x0000555555554000  →  <++++info symbol 0x555555554000
+No symbol matches 0x555555554000.+0> jg 0x555555554047
+$eflags: [ZERO carry PARITY adjust sign trap INTERRUPT direction overflow resume virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdb70│+0x0000: 0x00000010000006f0	 ← $rsp
+0x00007fffffffdb78│+0x0008: 0x000055555555603e  →  0x206425007473696c ("list"?)
+0x00007fffffffdb80│+0x0010: 0x00007ffff7fc1000  →  0x00010102464c457f
+0x00007fffffffdb88│+0x0018: 0x00005555555592a0  →  0x000000007473696c ("list"?)
+0x00007fffffffdb90│+0x0020: 0x00007fffffffdbc0  →  0x0000000000000001	 ← $rbp
+0x00007fffffffdb98│+0x0028: 0x0000555555555294  →  <++++info symbol 0x555555555294
+main+39> mov QWORD PTR [rbp-0x8], rax
+0x00007fffffffdba0│+0x0030: 0x00007fffffffdcd8  →  0x00007fffffffdf4b  →  "/home/russela-rhit/csse332-labs-summer-russela/deb[...]"
+0x00007fffffffdba8│+0x0038: 0x0000000100000064 ("d"?)
+──────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+   0x55555555525d <+++info symbol 0x55555555525d
+alloc_al+84> mov    rax, QWORD PTR [rbp-0x8]
+   0x555555555261 <+++info symbol 0x555555555261
+alloc_al+88> mov    edx, DWORD PTR [rbp-0x1c]
+   0x555555555264 <+++info symbol 0x555555555264
+alloc_al+91> mov    DWORD PTR [rax+0x10], edx
+ → 0x555555555267 <++++info symbol 0x555555555267
+alloc_al+94> mov    rax, QWORD PTR [rbp-0x8]
+   0x55555555526b <+++info symbol 0x55555555526b
+alloc_al+98> leave  
+   0x55555555526c <+++info symbol 0x55555555526c
+alloc_al+99> ret    
+   0x55555555526d <++++info symbol 0x55555555526d
+main+0> endbr64 
+   0x555555555271 <+++info symbol 0x555555555271
+main+4> push   rbp
+   0x555555555272 <+++info symbol 0x555555555272
+main+5> mov    rbp, rsp
+───────────────────────────────────────────────────────────────────────────────────────────────── source:al.c+59 ────
+●    54	   }
+     55	 
+     56	   strcpy(al->name, name);
+     57	   al->size = size;
+     58	 
+           // al=0x00007fffffffdb88  →  [...]  →  0x000000007473696c ("list"?)
+ →   59	   return al;
+     60	 }
+     61	 
+     62	 /**
+     63	   * The main function below allocate an array list, fills it with some data,
+     64	   * and then prints it. It will then go on to free the array list to return the
+──────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "al.bin", stopped 0x555555555267 in alloc_al (), reason: SINGLE STEP
+────────────────────────────────────────────────────────────────────────────────────────────────────────── trace ────
+[#0] 0x555555555267 → alloc_al(name=0x55555555603e "list", size=0x10)
+[#1] 0x555555555294 → main(argc=0x1, argv=0x7fffffffdcd8)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
++info local
+al = 0x5555555592a0
+
+quit
++quit

@@ -21,6 +21,7 @@
  ****************************************************************************/
 
 #include "sllist.h"
+#include <stddef.h>
 
 void init_node(struct list_node *node)
 {
@@ -32,6 +33,7 @@ void init_node(struct list_node *node)
 void add_head(struct list_node *head, struct list_node *node)
 {
   node->next = head->next;
+  head->next = node;
 }
 
 // add at tail
@@ -44,6 +46,7 @@ void add_tail(struct list_node *head, struct list_node *node)
   }
 
   node->next = p->next;
+  p->next = node;
 }
 
 // delete a node
@@ -59,6 +62,14 @@ void del_node(struct list_node *head, struct list_node *node)
 
   // empty!
   if(n == head) return;
+
+  if(n->next){
+  p->next = n->next;
+  return;
+  }else{
+    p->next = NULL;
+  }
+  
 }
 
 // print the list
@@ -66,9 +77,13 @@ void print_list(struct list_node *head, void (*print_fn)(struct list_node *))
 {
   struct list_node *p = head->next;
 
-  while(p != head) {
-    print_fn(p);
+  while(p->next) {
+    if(p){
+    (*print_fn)(p);
     p = p->next;
+    }else{
+      break;
+    }
   }
 }
 

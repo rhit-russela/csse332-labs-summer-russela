@@ -1,3 +1,4 @@
+
 /****************************************************************************
  * Copyright © 2024 Rose-Hulman Institute of Technology
  *
@@ -81,6 +82,7 @@ struct student *alloc_student(const char *name) {
   *(st->name + strlen(name)) = 0;
 
   // initialize the list node
+  st->grades = malloc(sizeof(NUM_EXAMS * sizeof(st->grades)));
   init_node(&st->node);
 
   return st;
@@ -116,7 +118,6 @@ int main(int argc, char **argv) {
           students[i]->grades[j] = (i + j) << 1;
         }
       }
-
       // Add them all at the end.
       add_tail(&head, &students[0]->node);
       add_tail(&head, &students[1]->node);

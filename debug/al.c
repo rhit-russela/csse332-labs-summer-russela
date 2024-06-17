@@ -71,12 +71,15 @@ struct array_list *alloc_al(const char *name, int size)
   */
 int main(int argc, char **argv) {
   struct array_list *al = alloc_al("list", 16);
+  int *array = malloc(16 * sizeof(int));
 
   // initialize the array list
   for(int i = 0; i < al->size; i++) {
-    al->array[i] = i;
+    array[i] = i;
   }
-
+  
+  al->array = array;
+  
   // print it out
   for(int i = 0; i < al->size; i++) {
     printf("%d ", al->array[i]);
@@ -84,6 +87,7 @@ int main(int argc, char **argv) {
   printf("\n");
 
   // cleanup because we are nice
+  free(al->array);
   free(al);
 
   exit(EXIT_SUCCESS);

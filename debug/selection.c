@@ -10,13 +10,16 @@ void selection_sort(int *A, int size) {
 
   for(i = size-1; i > 0; i--) {
     max = 0;
-    for (j = 1; i <= size; j++) {
-      if(A[j] > A[max])
+    for (j = 1; j < i; j++) {
+      if(A[j] > A[max]){
         max = j;
+	}
     }
+    if(A[max] > A[i]){
     temp = A[max];
     A[max] = A[i];
     A[i] = temp;
+    }
   }
 }
 
@@ -28,9 +31,11 @@ int binary_search(int item, int *A, int size) {
   while (1) {
     if(hi < lo)
       return 0;  // not found
+      break;
     int mid = (hi + lo) / 2;
     if(A[mid] == item)
       return 1;  // found
+      break;
     if(item < A[mid])
       hi = mid;  // move hi to eliminate 2nd half of A
     else

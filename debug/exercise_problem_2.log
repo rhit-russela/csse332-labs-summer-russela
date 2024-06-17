@@ -1,0 +1,82 @@
+Reading symbols from ./selection.bin...
++start
+Temporary breakpoint 1 at 0x1306: file selection.c, line 42.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/selection.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main () at selection.c:42
+42	int main() {
++n
+43	  int list[] = { 100, 45, 89, 27, 317, 17 };
++n
+46	  printf("unsorted list: \n");
++n
+47	  printf("\t [ ");
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+49	    printf("%4d ", list[i]);
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+49	    printf("%4d ", list[i]);
++info local
+i = 1
+list = {100, 45, 89, 27, 317, 17}
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+49	    printf("%4d ", list[i]);
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+49	    printf("%4d ", list[i]);
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+49	    printf("%4d ", list[i]);
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+49	    printf("%4d ", list[i]);
++n
+48	  for(int i = 0; i < 6; i++) {
++n
+51	  printf("]\n");
++n
+53	  selection_sort(list, 6);
++info local
+list = {100, 45, 89, 27, 317, 17}
++n
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555551ca in selection_sort (A=0x7fffffffdb90, size=6) at selection.c:14
+14	      if(A[j] > A[max])
++p A[j]
+Cannot access memory at address 0x7ffffffff000
++info local
+i = 5
+j = 1308
+max = 423
+temp = 21845
++p A[max]
+$1 = 2054696490
++quit
+Reading symbols from ./selection.bin...
++start
+Temporary breakpoint 1 at 0x1306: file selection.c, line 43.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/selection.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main () at selection.c:43
+43	int main() {
++continue
+Continuing.
+
+Program received signal SIGINT, Interrupt.
+binary_search (item=42, A=0x7fffffffdbb0, size=6) at selection.c:33
+33	    if(A[mid] == item)
++q
+

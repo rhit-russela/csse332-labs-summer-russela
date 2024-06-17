@@ -1,0 +1,417 @@
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++n
+[Inferior 1 (process 132146) exited with code 01]
++p argc
+No symbol "argc" in current context.
++info local
+No frame selected.
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++info local
+i = 0
+j = 1431654752
+num_tests = 21845
++p &head
+$1 = (struct list_node *) 0x555555558080 <head>
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++n
+[Inferior 1 (process 132530) exited with code 01]
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++n
+[Inferior 1 (process 136720) exited with code 01]
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 154833) exited with code 01]
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 155234) exited with code 01]
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 158512) exited with code 01]
++info local
+No frame selected.
++start
+Temporary breakpoint 2 at 0x555555555377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++p head
+$1 = {next = 0x0}
++n
+108	  num_tests = parse_args(argc, argv);
++info local
+i = 0
+j = 1431654752
+num_tests = 21845
++n
+110	  switch(num_tests) {
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++p head
+$2 = {next = 0x555555558080 <head>}
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 160646) exited with code 01]
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 160824) exited with code 01]
++q
+Reading symbols from ./student.bin...
++b 206
+Breakpoint 1 at 0x1781: file student.c, line 206.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+
+Breakpoint 1, test1 () at student.c:206
+206	  del_node(&head, &st->node);
++info local
+st = 0x5555555592a0
++p head
+$1 = {next = 0x5555555592a0}
++n
+207	  if(!IS_EMPTY(head)) {
++p head
+$2 = {next = 0x5555555592a0}
++p head->next->next
+$3 = (struct list_node *) 0x555555558080 <head>
++q
+Reading symbols from ./student.bin...
++b 206
+Breakpoint 1 at 0x1781: file student.c, line 206.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+
+Breakpoint 1, test1 () at student.c:206
+206	  del_node(&head, &st->node);
++n
+207	  if(!IS_EMPTY(head)) {
++info local
+st = 0x5555555592a0
++p head
+$1 = {next = 0x5555555592a0}
++p head->next
+$2 = (struct list_node *) 0x5555555592a0
++n
+208	    printf("FAILED (list is still not empty after delete)\n");
++q
+Reading symbols from ./student.bin...
++b 206
+Breakpoint 1 at 0x1781: file student.c, line 206.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+
+Breakpoint 1, test1 () at student.c:206
+206	  del_node(&head, &st->node);
++info local
+st = 0x5555555592a0
++p head->next
+$1 = (struct list_node *) 0x5555555592a0
++n
+207	  if(!IS_EMPTY(head)) {
++p head->next
+$2 = (struct list_node *) 0x555555558080 <head>
++n
+212	  printf("OK.\n");
++n
+213	  return 1;
++q
+Reading symbols from ./student.bin...
++start
+Temporary breakpoint 1 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 164646) exited normally]
++q
+Reading symbols from ./student.bin...
++q
+Reading symbols from ./student.bin...
++b 121
+Breakpoint 1 at 0x1473: file student.c, line 121.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 165525) exited normally]
++q
+Reading symbols from ./student.bin...
++b 121
+Breakpoint 1 at 0x1473: file student.c, line 121.
++continue
+The program is not being run.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++info local
+i = 0
+j = 1431654752
+num_tests = -1
++q
+Reading symbols from ./student.bin...
++b 128
+Breakpoint 1 at 0x14ff: file student.c, line 128.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++continue
+Continuing.
+[Inferior 1 (process 167784) exited normally]
++q
+Reading symbols from ./student.bin...
++b 128
+Breakpoint 1 at 0x14ff: file student.c, line 128.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++n
+150	      if(!test1()) exit(EXIT_FAILURE);
++q
+Reading symbols from ./student.bin...
++b 128
+Breakpoint 1 at 0x14ff: file student.c, line 128.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++step
+init_node (node=0x555555558080 <head>) at sllist.c:29
+29	  node->next = node;
++n
+30	}
++n
+main (argc=1, argv=0x7fffffffdce8) at student.c:108
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++step
+150	      if(!test1()) exit(EXIT_FAILURE);
++q
+Reading symbols from ./student.bin...
++b 128
+Breakpoint 1 at 0x14ff: file student.c, line 128.
++start
+Temporary breakpoint 2 at 0x1377: file student.c, line 105.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/student.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 2, main (argc=1, argv=0x7fffffffdce8) at student.c:105
+105	  init_node(&head);
++n
+108	  num_tests = parse_args(argc, argv);
++n
+110	  switch(num_tests) {
++stepi
+0x000055555555539e	110	  switch(num_tests) {
++stepi
+0x00005555555553a4	110	  switch(num_tests) {
++stepi
+0x00005555555553a8	110	  switch(num_tests) {
++stepi
+0x00005555555553ae	110	  switch(num_tests) {
++stepi
+0x00005555555553b2	110	  switch(num_tests) {
++stepi
+0x00005555555553b8	110	  switch(num_tests) {
++stepi
+0x00005555555553bc	110	  switch(num_tests) {
++q

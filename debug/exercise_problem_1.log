@@ -1,0 +1,38 @@
+Reading symbols from ./al.bin...
++start
+Temporary breakpoint 1 at 0x1280: file al.c, line 73.
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/debug/al.bin 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Temporary breakpoint 1, main (argc=1, argv=0x7fffffffdcd8) at al.c:73
+73	  struct array_list *al = alloc_al("list", 16);
++n
+76	  for(int i = 0; i < al->size; i++) {
++n
+77	    al->array[i] = i;
++info local
+i = 0
+al = 0x5555555592a0
++p al
+$1 = (struct array_list *) 0x5555555592a0
++p *al
+$2 = {name = "list", '\000' <repeats 11 times>, size = 16, array = 0x0}
++n
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00005555555552b8 in main (argc=1, argv=0x7fffffffdcd8) at al.c:77
+77	    al->array[i] = i;
++info local
+i = 0
+al = 0x5555555592a0
++p *array
+No symbol "array" in current context.
++p array
+No symbol "array" in current context.
++p al->array
+$3 = (int *) 0x0
++p al->array[i]
+Cannot access memory at address 0x0
++q
+
