@@ -73,7 +73,12 @@ uint8 rhmalloc_init(void)
   }
 
   /* TODO: Add code here to initialize freelist and its content. */
-  
+
+  freelist = (struct metadata*)heap_mem_start;
+  freelist->in_use = 0;
+  freelist->size = MAX_HEAP_SIZE - sizeof(metadata_t);
+  freelist->prev = 0;
+  freelist->next = 0;
 
   return 0;
 }
@@ -106,8 +111,65 @@ void *rhmalloc(uint32 size)
     if(rhmalloc_init()) return 0;
 
   /* TODO: Add you malloc code here. */
+  metadata_t *temp = 0;
 
-  return 0;
+  unsigned bytes_for_user = ALIGN(size);
+
+
+  //find the first block that is free that is also the size or greater
+  while(freelist != 0){
+  if((freelist->in_use == 0) && ((freelist->size + sizeof(metadata_t)) >= (bytes_for_user + sizeof(metadata_t)))){
+      break;
+    }
+  if(freelist->next != 0){
+    freelist = freelist->next;
+  }else{
+    //no more memory
+    return 0;
+  }
+  }
+
+    if(freelist == (freelist + MAX_HEAP_SIZE) || freelist->in_use == 1){
+    temp = freelist;
+    freelist = (struct metadata*)heap_mem_start;
+    return (void*)temp;
+  }
+
+  //check the size of freelist block. If block is greater than 2*sizeof(metadata_t*) + ALGIN(size)
+  //then split [since there is enough memory to fit another metadata + usable memory]
+  if((int)(freelist->size - (bytes_for_user)) >= (int)(sizeof(metadata_t) + ALIGN(8))){
+    //split
+    //where new pointer ends;
+    metadata_t* splitMemNode = (metadata_t*)((void*)(freelist) +
+					     bytes_for_user + sizeof(metadata_t));
+    
+    splitMemNode->in_use = 0;
+    splitMemNode->size = freelist->size - (sizeof(metadata_t) + bytes_for_user);
+    splitMemNode->prev = freelist;
+    if(freelist->next != 0){
+    splitMemNode->next = freelist->next;
+    }
+
+    //make the last block in use and readjust
+    freelist->size = bytes_for_user;
+    freelist->in_use = 1;
+    if(freelist->next != 0){
+      freelist->next->prev = splitMemNode;
+    }
+    freelist->next = splitMemNode;
+
+    
+  }else{
+    //don't split and use
+    freelist->in_use = 1;
+    
+    temp = freelist;
+    freelist = (struct metadata*)heap_mem_start;
+    return (void*)(temp) + sizeof(metadata_t);
+  }
+  temp = freelist;
+  freelist = (struct metadata*)heap_mem_start;
+  return (void*)(temp) + sizeof(metadata_t);
 }
 
 /**
@@ -122,4 +184,38 @@ void *rhmalloc(uint32 size)
 void rhfree(void *ptr)
 {
   /* TODO: Add your free code here. */
+  metadata_t* freeNode = (struct metadata*)(ptr - sizeof(metadata_t));
+
+  //find node in freelist
+  freelist = freeNode;
+  
+  freelist->in_use = 0;
+   
+  //free + merge
+  if(freelist->next->in_use == 0 && freelist->next != 0){
+     //change the size (merge)
+     freelist->size = freelist->size + freelist->next->size + sizeof(metadata_t);
+
+     freelist->next = freelist->next->next;
+
+     if(freelist->next->in_use != 0){
+       freelist->next->prev = freelist;
+      }
+   }
+
+  if(freelist->prev != 0 && freelist->prev->in_use == 0){
+     //change size
+     freelist->prev->size = freelist->prev->size + freelist->size + sizeof(metadata_t);
+
+     freelist->prev->next = freelist->next;
+     
+     //change address
+      if(freelist->next != 0){
+	freelist->next->prev = freelist->prev;
+      }
+      
+       freelist = freelist->prev;
+       
+     }
+   
 }
