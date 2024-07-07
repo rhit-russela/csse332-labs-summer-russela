@@ -36,6 +36,14 @@ static void *original_start = 0;
  */
 static void *heap_mem_start = 0;
 
+// Add a new freelist to use
+static metadata_t* freelist;
+
+//Keep track of current not in_use chunk
+static metadata_t* currentFree;
+
+//static metadata_t** pointerList;
+//int arraySize;
 /**
  * Check if the freelist has been initialized, if not, call rhmalloc_init()
 */
@@ -95,7 +103,33 @@ uint8 rhmalloc_init(void)
 
   // TODO: Add your initialization code here, but do not change anything above
   // this line.
+  freelist = heap_mem_start;
+  freelist->next = 0;
+  freelist->prev = 0;
+  freelist->size = ALIGN(MAX_HEAP_SIZE) - sizeof(metadata_t);
+  freelist->in_use = 0;
+  currentFree = freelist;
 
+  /*  int size = MAX_HEAP_SIZE;
+  arraySize = 0;
+  while(size >= 32){
+    size = size/2;
+    arraySize++;
+  }
+
+  metadata_t* initializedList[arraySize];
+  pointerList = initializedList;
+  int j = 0;
+  while(j < arraySize){
+    pointerList[j] = 0;
+    
+    printf("LOOP pointerList[%d] = %p\n", j, pointerList[j]);
+    j++;
+  }
+
+  //initialize pointerlist
+  pointerList[17] = freelist;
+  printf("INITIALIZE pointerList[17] = %p\n", pointerList[17]);*/
   return 0;
 }
 
@@ -137,8 +171,19 @@ void rhfree_all(void)
 void *get_buddy(void *ptr, int exponent)
 {
   // TODO: Add your code here.
-  return (void*)0;
+  
+  return (void*)((unsigned long)ptr ^ (1 << exponent));
 }
+
+/*int index_offset(int size){
+  int offset = 0;
+  int count = 32;
+  while(size > count){
+    count = count * 2;
+    offset++;
+  }
+  return offset;  
+  }*/
 
 /**
  * Allocate size bytes and return a pointer to start of the region. 
@@ -152,9 +197,118 @@ void *rhmalloc(uint32 size)
     if(rhmalloc_init()) return 0;
 
   // TODO: Add your malloc code here.
+   int allocate_size = ALIGN(size);
+  //check if the size is minimum and make sure the allocated size is power of 2
+  if(ALIGN(size) + sizeof(metadata_t) <= 32){
+    allocate_size = 32;
+  }else if(size % 2 != 0){
+    int i = 64;
+    int target = size;
+    while(i < target){
+      i = i * 2;
+    }
+    allocate_size = i;
+  }
+  
 
+  //check if in use
+  freelist = currentFree;
+
+  while(freelist->size > 32){
+   if(freelist->in_use == 0){
+    if(freelist->size >= (allocate_size + 32)){
+      //split
+      metadata_t* newNode;
+      newNode = (metadata_t*)((void*)freelist + allocate_size);
+      newNode->size = ((freelist->size) - sizeof(metadata_t) - allocate_size);
+      newNode->in_use = 0;
+      newNode->prev = freelist;
+
+      freelist->size = allocate_size;
+      metadata_t* prevNext = freelist->next;
+      freelist->next = newNode;
+      newNode->next = prevNext;      
+    }
+    // no split + aftermath of splitting
+    freelist->in_use = 1;
+    currentFree = freelist->next;
+    return (void*)freelist + sizeof(metadata_t);
+   }
+   //keep searching
+    freelist = freelist->next;
+    currentFree = freelist;
+  }
+  
   return (void*)0;
 }
+
+  //what does pointerList look like right now?
+  /* int j = 0;
+  while(j < arraySize){
+    pointerList[j] = 0;
+    printf("LOOP START MALLOC pointerList[%d] = %p\n", j, pointerList[j]);
+    j++;
+  }
+  
+  int allocate_size = ALIGN(size);
+  printf("This is the size they're looking for: %d\n", size);
+  //check if the size is minimum and make sure the allocated size is power of 2
+  if(ALIGN(size) + sizeof(metadata_t) <= 32){
+    allocate_size = index_offset(ALIGN(32 + sizeof(metadata_t)));
+  }else{
+    allocate_size = index_offset(ALIGN(size + sizeof(metadata_t)));
+  }
+  printf("This is the offset I'm making them look for: %d\n", allocate_size);
+
+  //check if in use
+  int index = allocate_size;
+  while(pointerList[index] == 0 && index < arraySize){
+    printf("LOOP pointerList[%d] = %p\n", index, pointerList[index]);
+    index++;
+  }
+
+  printf("AT ZERO? pointerList[0] = %p\n", pointerList[0]);
+  printf("ALLOCATE? pointerList[allocate_size] = %p\n", pointerList[allocate_size]);
+  printf("Where is index? : %d\n", index);
+
+  while(index > allocate_size){
+   printf("LOOP Where is index? : %d\n", index);
+    //make head nodes and chained nodes
+    //split in 2 constantly
+    metadata_t* newNode = (metadata_t*)((void*)freelist + (freelist->size + sizeof(metadata_t))/2);
+    newNode->size = (freelist->size + sizeof(metadata_t))/2 - sizeof(metadata_t);
+    printf("LOOP Hello from the other side of *math*\n");
+    newNode->in_use = 0;
+    newNode->next = 0;
+    newNode->prev = freelist;
+
+    printf("LOOP Hello from the other side of *newNode*\n");
+    freelist->size = newNode->size;
+    metadata_t* next = freelist->next;
+    freelist->next = newNode;
+
+    
+    printf("LOOP Hello from the other side of *freelist*\n");
+    
+    pointerList[index-1] = freelist;
+    pointerList[index] = next;
+
+    printf("LOOP pointerList[index-1] = %p\n", pointerList[index-1]);
+    printf("LOOP pointerList[index] = %p\n", pointerList[index]);
+    
+    
+    index--;     
+  }
+  // in the correct index
+  pointerList[index]->in_use = 1;
+  metadata_t* returnPointer = pointerList[index];
+  printf("returnPointer [no metadata] = %p\n", pointerList[index]);
+
+  pointerList[index] = pointerList[index]->next;
+  printf("pointerList[index] = %p\n", pointerList[index]);
+  
+  return (void*)returnPointer + sizeof(metadata_t);
+}*/
 
 /**
  * Free a memory region and return it to the memory allocator.
