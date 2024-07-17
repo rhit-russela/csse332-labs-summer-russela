@@ -10,6 +10,7 @@ struct spinlock tickslock;
 uint ticks;
 
 extern char trampoline[], uservec[], userret[];
+extern pte_t *walk(pagetable_t pagetable, uint64 va, int alloc);
 
 // in kernelvec.S, calls kerneltrap().
 void kernelvec();
@@ -67,7 +68,36 @@ usertrap(void)
     syscall();
   } else if((which_dev = devintr()) != 0){
     // ok
-  } else {
+  } else if(r_scause() == 15) {
+    printf("Segmentation fault from process %d at address %p\n", p->pid, r_stval());
+    //p->killed = 1;
+    uint64 pa;
+    uint64 stval = PGROUNDDOWN(r_stval());
+    uint64 flags;
+    char* memory;
+    pte_t *pte = walk(p->pagetable, stval, 0);
+
+    if(pte && !(*pte && PTE_W) && (*pte && PTE_RSW)){
+      pa = PTE2PA(*pte);
+
+      *pte &= ~PTE_RSW;
+      *pte |= PTE_W;
+      flags = PTE_FLAGS(*pte);
+      if((memory = kalloc()) == 0){ // Allocate a new page for child
+	panic("out of memory");
+      }
+
+      memmove(memory, (char*)pa, PGSIZE); // copy information to new page in child
+
+      uvmunmap(p->pagetable, stval, 1, 1);
+
+      if(mappages(p->pagetable, stval, PGSIZE, (uint64)memory, flags) != 0){ // Transfer flag information
+	panic("usertap: mempages");
+      }
+    }else{
+      p->killed = 1;
+    }
+  }else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
     printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
     setkilled(p);
