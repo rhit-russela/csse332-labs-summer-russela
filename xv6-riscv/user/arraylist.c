@@ -23,6 +23,7 @@
 #include "kernel/types.h"
 #include "user/user.h"
 #include "user/rhtest.h"
+#include <stddef.h>
 
 #define DEF_ARRAY_LIST_CAPACITY 4
 
@@ -52,7 +53,11 @@ struct arraylist {
 struct arraylist *al_new(void)
 {
   /* TODO: Add your code here. */
-  return 0;
+  struct arraylist al;
+  al.size = 0;
+  al.capacity = DEF_ARRAY_LIST_CAPACITY;
+  al.list = malloc(DEF_ARRAY_LIST_CAPACITY);
+  return al;
 }
 
 /**
@@ -66,6 +71,7 @@ struct arraylist *al_new(void)
 void al_free(struct arraylist *al)
 {
   /* TODO: Add your code here. */
+  free(al->list);
 }
 
 /**
@@ -81,7 +87,10 @@ void al_free(struct arraylist *al)
 int al_get_at(struct arraylist *al, int pos)
 {
   /* TODO: Add your code here. */
-  return 0;
+  if(al->list[pos]){
+    return al->list[pos];
+  }
+  return 0xffffffff;
 }
 
 /**
@@ -99,6 +108,14 @@ int al_get_at(struct arraylist *al, int pos)
 void al_resize(struct arraylist *al)
 {
   /* TODO: Add your code here. */
+  int *new_list[al->size * 2] = malloc(al->size * 2);
+  int i = 0;
+  while(i != al->size){
+    new_list[i] = al->list[i];
+    i++;
+  }
+  al->size = al->size * 2;
+  al->list = new_list;
 }
 
 /**
@@ -117,6 +134,13 @@ void al_resize(struct arraylist *al)
 void al_append(struct arraylist *al, int val)
 {
   /* TODO: Add your code here. */
+  if(al->list[al->size - 1] == NULL){
+    int temp = al->size;
+    al_resize(al);
+    al->list[temp] = val;
+  }else{
+    al->list[al->size - 1] = val;
+  }
 }
 
 /**
