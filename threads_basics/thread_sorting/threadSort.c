@@ -1,3 +1,4 @@
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +12,6 @@
 #define MAX_VALS_PER_THREAD 1000
 // max threads allowed
 #define MAX_N_SIZE 100
-
 
 /* other global variable instantiations can go here */
 
@@ -74,8 +74,8 @@ void MergeSort(int array[], int inputLength) {
   if (inputLength > 1) {
     MergeSort(array, mid);
     MergeSort(array + mid, inputLength - mid);
-    // merge's last input is an inclusive index
-    printf("calling merge 0->%d, 1->%d\n mid %d\n",array[0], array[1], mid); 
+    //merge's last input is an inclusive index
+    //printf("calling merge 0->%d, 1->%d\n mid %d\n",array[0], array[1], mid); 
     Merge(array, 0, mid, inputLength - 1);
   }
 }
@@ -85,11 +85,38 @@ void MergeSort(int array[], int inputLength) {
 // here's a global I used you might find useful
 char* descriptions[] = {"brute force","bubble","merge"};
 
+struct sortData{
+  int current;
+  int vals;
+  int* data;
+};
+
 // I wrote a function called thread dispatch which parses the thread
 // parameters and calls the correct sorting function
 //
 // you can do it a different way but I think this is easiest
 void* thread_dispatch(void* data) {
+  struct sortData* info = (struct sortData*)data;
+  int currentSort = info->current;
+  int* data_array = info->data;
+  int vals_per_thread = info->vals;
+
+  switch(currentSort){
+  case 0:
+    printf("data_array[0]: %d\n", data_array[0]);
+    BruteForceSort(data_array, vals_per_thread);
+    break;
+  case 1:
+    // printf("data_array[0]: %d\n", data_array[0]);
+    BubbleSort(data_array, vals_per_thread);
+    break;
+  case 2:
+    // printf("data_array[0]: %d\n", data_array[0]);
+    MergeSort(data_array, vals_per_thread);
+    break;
+  };
+
+  return 0;
 
 }
 
@@ -133,8 +160,26 @@ int main(int argc, char** argv) {
   }
 
   // create your threads here
+  pthread_t threads[n];
+  int currentSort = 0;
+  struct sortData information;
+  information.current = currentSort;
+  information.vals = vals_per_thread;
+  information.data = &data_array[0];
+
+  for(int i = 0; i < n; i++){
+    information.current = i % 3;
+    information.data = &data_array[i * vals_per_thread];
+    printf("Sorting indexes %d-%d with %s sort\n", (i*vals_per_thread), ((i+1)*vals_per_thread - 1), descriptions[information.current]);
+    pthread_create(&threads[i], NULL, thread_dispatch, (void*)&information);
+    //break;
+   }
 
   // wait for them to finish
+   for(int k = 0; k < n; k++){
+    pthread_join(threads[k], NULL);
+    //wait(NULL);
+    }
 
   // print out the algorithm summary statistics
 

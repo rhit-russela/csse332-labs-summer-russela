@@ -22,10 +22,18 @@
 #include <sys/wait.h>
 #include <pthread.h>
 
+void factor(int* num){
+  int target = num[0];
+  int i = num[1];
+  //printf("I made it here target: %d, i: %d\n", target, i);
+  if (target % i == 0) {
+    printf("%d is a factor\n", i);
+  }
+}
 
 int main(void) {
   /* you can ignore the linter warning about this */
-  unsigned long long int target, i, start = 0;
+  unsigned long long int target, i = 0;
   int numThreads;
   printf("Give a number to factor.\n");
   scanf("%llu", &target);
@@ -37,13 +45,25 @@ int main(void) {
     return 0;
   }
 
+  pthread_t arrayThreads[numThreads];
+  int threadNum = 1;
+  int num[2];
+  num[0] = (int)target;
+  
   for (i = 2; i <= target/2; i = i + 1) {
     /* You'll want to keep this testing line in.  Otherwise it goes so
        fast it can be hard to detect your code is running in
        parallel. Also test with a large number (i.e. > 3000) */
-    printf("testing %llu\n", i);
-    if (target % i == 0) {
-      printf("%llu is a factor\n", i);
+    num[1] = (int)i;
+    if(threadNum <= numThreads){
+      printf("Thread %d testing %llu\n", threadNum, i);
+      pthread_create(&arrayThreads[threadNum], 0, (void*)factor, &num);
+      threadNum++;
+    }else{
+      threadNum = 1;
+      printf("Thread %d testing %llu\n", threadNum, i);
+      pthread_create(&arrayThreads[threadNum], 0, (void*)factor, &num);
+      threadNum++;
     }
   }
   return 0;
