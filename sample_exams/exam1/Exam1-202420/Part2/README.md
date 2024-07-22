@@ -81,6 +81,7 @@ $
 
 <div style="page-break-after: always;"></div>
 
+<!--
 # Problem 6: 10 points
 
 Problem 6 is an extension of Problem 5. In this variation, pipe the output of `buffalopipe.bin` to a new program, `nobuffalopipe.bin`, which strips the buffalo ASCII art from the output. Print the final output from `nobuffalopipe.bin.`
@@ -97,8 +98,9 @@ nobuffalopipe exited with exit code [a random code each time]
 
 $
 ```
+-->
 
 # Submission instructions
 
 Leave your code in your exam folder and exit your ssh session.
-  
+
