@@ -2,15 +2,46 @@
 #include <pthread.h>
 #include <unistd.h>
 
+pthread_cond_t bullDoze;
+
+int numberAtWall = 0;
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock2 = PTHREAD_MUTEX_INITIALIZER;
+
+void brickWall(void){
+  pthread_mutex_lock(&lock);
+  numberAtWall++;
+  while(numberAtWall > 3){
+      pthread_cond_wait(&bullDoze, &lock);
+    }
+  pthread_mutex_unlock(&lock);
+}
+
+void freeThread(void){
+  pthread_mutex_lock(&lock2);
+  pthread_cond_signal(&bullDoze);
+  numberAtWall--;
+  pthread_mutex_unlock(&lock2);
+}
+
 void *thread(void *arg)
 {
 	char *letter = (char *)arg;
 	printf("%c wants to enter the critical section\n", *letter);
-
+	
+	brickWall();
+	
 	printf("%c is in the critical section\n", *letter);
+	
 	sleep(1);
+	
 	printf("%c has left the critical section\n", *letter);
 
+	freeThread();
+
+
+	
 	return NULL;
 }
 
