@@ -1,0 +1,103 @@
+"/home/russela-rhit/csse332-labs-summer-russela/stack_smashing/part2.c": not in executable format: file format not recognized
++quit
+"/home/russela-rhit/csse332-labs-summer-russela/stack_smashing/part2.c": not in executable format: file format not recognized
++run
+Starting program:  
+No executable file specified.
+Use the "file" or "exec-file" command.
++quit
+./part2.bin: No such file or directory.
++run
+Starting program:  
+No executable file specified.
+Use the "file" or "exec-file" command.
++quit
+Reading symbols from ./part2...
++run
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/stack_smashing/part2 
+
+Program received signal SIGSEGV, Segmentation fault.
+0x08049800 in print_good_outcome () at part2.c:15
+15	  printf("Have a nice day =)\n");
++n
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
++run
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/stack_smashing/part2 
+[Inferior 1 (process 1340) exited normally]
++quite
+Undefined command: "quite".  Try "help".
++quit
+Reading symbols from ./part2...
++gef
+Undefined command: "gef".  Try "help".
++b 20
+Breakpoint 1 at 0x804980b: file part2.c, line 21.
++run
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/stack_smashing/part2 
+
+Breakpoint 1, vulnerable_fn () at part2.c:21
+21	{
++n
+23	  gets(input);
++n
+24	}
++n
+_main () at part2.c:30
+30	  print_good_outcome();
++x/10x $sp
+0xffffcbc0:	0x00000000	0x00000000	0xffffeee0	0x08049862
+0xffffcbd0:	0xffffcbec	0x00002358	0x00000001	0x08049bdb
+0xffffcbe0:	0x00000001	0xffffcd14
++p &input
+No symbol "input" in current context.
++run
+Starting program: /home/russela-rhit/csse332-labs-summer-russela/stack_smashing/part2 
+
+Breakpoint 1, vulnerable_fn () at part2.c:21
+21	{
++p &input
+$1 = (char (*)[4]) 0xffffcbac
++x/10w $esp
+0xffffcbbc:	0x08049843	0x00000000	0x00000000	0xffffeee0
+0xffffcbcc:	0x08049862	0xffffcbec	0x00002358	0x00000001
+0xffffcbdc:	0x08049bdb	0x00000001
++x/15w $esp
+0xffffcbbc:	0x08049843	0x00000000	0x00000000	0xffffeee0
+0xffffcbcc:	0x08049862	0xffffcbec	0x00002358	0x00000001
+0xffffcbdc:	0x08049bdb	0x00000001	0xffffcd14	0xffffcd1c
+0xffffcbec:	0xffffcc04	0x080ee000	0x0804984d
++x/20w $esp
+0xffffcbbc:	0x08049843	0x00000000	0x00000000	0xffffeee0
+0xffffcbcc:	0x08049862	0xffffcbec	0x00002358	0x00000001
+0xffffcbdc:	0x08049bdb	0x00000001	0xffffcd14	0xffffcd1c
+0xffffcbec:	0xffffcc04	0x080ee000	0x0804984d	0x00000001
+0xffffcbfc:	0xffffcd14	0x080ee084	0x080ee000	0x080ee000
++x/30w $esp
+0xffffcbbc:	0x08049843	0x00000000	0x00000000	0xffffeee0
+0xffffcbcc:	0x08049862	0xffffcbec	0x00002358	0x00000001
+0xffffcbdc:	0x08049bdb	0x00000001	0xffffcd14	0xffffcd1c
+0xffffcbec:	0xffffcc04	0x080ee000	0x0804984d	0x00000001
+0xffffcbfc:	0xffffcd14	0x080ee084	0x080ee000	0x080ee000
+0xffffcc0c:	0x00000001	0x00000001	0x2114f7f2	0xd7b4041d
+0xffffcc1c:	0x00000000	0x00000000	0x00000000	0x00000000
+0xffffcc2c:	0x00000000	0x080481e8
++b 20
+Note: breakpoint 1 also set at pc 0x804980b.
+Breakpoint 2 at 0x804980b: file part2.c, line 21.
++x/40w $esp
+0xffffcbbc:	0x08049843	0x00000000	0x00000000	0xffffeee0
+0xffffcbcc:	0x08049862	0xffffcbec	0x00002358	0x00000001
+0xffffcbdc:	0x08049bdb	0x00000001	0xffffcd14	0xffffcd1c
+0xffffcbec:	0xffffcc04	0x080ee000	0x0804984d	0x00000001
+0xffffcbfc:	0xffffcd14	0x080ee084	0x080ee000	0x080ee000
+0xffffcc0c:	0x00000001	0x00000001	0x2114f7f2	0xd7b4041d
+0xffffcc1c:	0x00000000	0x00000000	0x00000000	0x00000000
+0xffffcc2c:	0x00000000	0x080481e8	0x08049b76	0xffffcd1c
+0xffffcc3c:	0x0804b418	0x00000000	0x00000000	0x00000000
+0xffffcc4c:	0x00000000	0xffffccb0	0x00008000	0x00000800
++quit
+Reading symbols from ./part2...
++set trace-commands on
++quit

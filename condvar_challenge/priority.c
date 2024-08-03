@@ -19,14 +19,54 @@
   Solve this problem with mutexes/condition variables
  **/
 
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t priority;
+
+int waiting = 0;
+int inCrit = 0;
+int highestPriority = 0;
+
 void *thread(void *arg)
 {
   int *num = (int *) arg;
   printf("%d wants to enter the critical section\n", *num);
 
+  pthread_mutex_lock(&lock);
+
+  if(inCrit != 0){
+    waiting ++;
+  }
+
+  while(waiting != 0){
+   if(*num > highestPriority){
+     highestPriority = *num;
+     //printf("Highest: %d\n", highestPriority);
+   }
+   //printf("THREAD %d IS RUNNING\n", *num);
+   while((*num != highestPriority && waiting > 1) || inCrit != 0){
+     pthread_cond_wait(&priority, &lock);
+   }
+   //printf("THREAD %d IS RUNNING AFTER BROADCAST\n", *num);
+
+   if(*num == highestPriority || waiting == 1){
+      waiting--;
+   //printf("NUM: %d is LEAVING\n", *num);
+   //printf("WAITING LEFT: %d\n", waiting);
+      break;
+   }
+  }
+
   printf("%d has entered the critical section\n", *num);
+  inCrit++;
+  pthread_mutex_unlock(&lock);
+
   sleep(1);
+
+  pthread_mutex_lock(&lock);
   printf("%d is finished with the critical section\n", *num);
+  inCrit--;
+  pthread_cond_broadcast(&priority);
+  pthread_mutex_unlock(&lock);
 
   return NULL;
 }

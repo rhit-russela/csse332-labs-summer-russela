@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <unistd.h>
+#include <string.h>
 
 #define NUM_LOAVES_PER_BATCH 7
 #define NUM_BATCHES 6
@@ -33,8 +34,20 @@
  **/
 
 int numLoaves;
+pthread_cond_t bakingBread;
+pthread_cond_t eatingBread;
+pthread_cond_t stayOut;
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock2 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock3 = PTHREAD_MUTEX_INITIALIZER;
+
+
+int animalInKitchen = 0;
+int eating = 0;
 
 void *littleRedHenThread(void *arg) {
+ pthread_mutex_lock(&lock);
   char *name = (char*)arg;
   int batch;
 
@@ -43,10 +56,18 @@ void *littleRedHenThread(void *arg) {
                // condition variables
     numLoaves += 7;
     printf("%-20s: A fresh batch of bread is ready.\n", name);
+    pthread_cond_signal(&eatingBread);
+    if(batch == 6){
+	break;
+    }
+    while(numLoaves > 0){
+     pthread_cond_wait(&bakingBread, &lock);
+    }
   }
 
   printf("%-20s: I'm fed up with feeding you lazy animals! "
          "No more bread!\n", name);
+ pthread_mutex_unlock(&lock);
   return NULL;
 }
 
@@ -54,17 +75,38 @@ void *otherAnimalThread(void *arg) {
   char *name = (char*)arg;
   int numLoavesEaten = 0;
   while (numLoavesEaten < NUM_LOAVES_TO_EAT) {
+  pthread_mutex_lock(&lock2);
+  animalInKitchen++;
+  if(animalInKitchen > 1){
+    while(eating == 1){
+     pthread_cond_wait(&stayOut, &lock2);
+    }
+  }
+  eating++;
     if (numLoaves <= 0) {
       printf("%-20s: Hey, Little Red Hen, make some more bread!\n", name);
+      pthread_cond_signal(&bakingBread);
+      while(numLoaves <= 0){
+        pthread_cond_wait(&eatingBread, &lock2);
+      }
     }
     numLoaves--;
     printf("%-20s: Mmm, this loaf is delicious.\n", name);
     numLoavesEaten++;
+ 
+    animalInKitchen--;
+    eating--;
+    pthread_cond_signal(&stayOut);
+    pthread_mutex_unlock(&lock2);
     if (random() > random()) {  // Adds variety to output
       sleep(1);
     }
   }
+
+  pthread_mutex_lock(&lock2);
+  pthread_cond_broadcast(&stayOut);
   printf("%-20s: I've had my fill of bread. Thanks, Little Red Hen!\n", name);
+  pthread_mutex_unlock(&lock2);
   return NULL;
 }
 

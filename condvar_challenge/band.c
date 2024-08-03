@@ -57,6 +57,55 @@ int GUIT = 2;
 
 char* names[] = {"drummer", "singer", "guitarist"};
 
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock2 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock3 = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t stageManager;
+pthread_cond_t doorManager;
+
+int band[] = {0, 0, 0};
+int onStage = 0;
+
+
+
+void bandCheckIn(int member){
+
+ pthread_mutex_lock(&lock);
+  if(band[member] == 1){
+     while(band[member] == 1){
+	pthread_cond_wait(&doorManager, &lock);
+     }
+     pthread_mutex_unlock(&lock); 
+     bandCheckIn(member);
+    }else{
+      band[member] = 1;
+      onStage++;
+      if(onStage == 3){
+        pthread_cond_broadcast(&stageManager);
+        pthread_mutex_unlock(&lock);
+        return;
+      }
+      while(onStage < 3){
+       pthread_cond_wait(&stageManager, &lock);
+      }
+    }
+ pthread_mutex_unlock(&lock);
+}
+
+void bandCheckOut(int member){
+ pthread_mutex_lock(&lock2);
+ if(band[member] == 1){
+  band[member] = 0;
+  onStage--;
+ }
+
+ if(onStage == 0){
+  pthread_cond_broadcast(&doorManager);
+ }
+
+ pthread_mutex_unlock(&lock2);
+
+}
 
 
 // because the code is similar, we'll just have one kind of thread
@@ -64,9 +113,15 @@ char* names[] = {"drummer", "singer", "guitarist"};
 void* friend(void * kind_ptr) {
   int kind = *((int*) kind_ptr);
   printf("%s arrived\n", names[kind]);
+
+  bandCheckIn(kind);
+
   printf("%s playing\n", names[kind]);
+
   sleep(1);
   printf("%s finished playing\n", names[kind]);
+
+  bandCheckOut(kind);
 
   return NULL;
 }

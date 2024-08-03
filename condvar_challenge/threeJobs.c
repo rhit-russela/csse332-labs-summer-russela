@@ -29,27 +29,61 @@
   This is similar to the readers/writers problem BTW.
  **/
 
-void* carpenter(void * ignored) {
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock2 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock3 = PTHREAD_MUTEX_INITIALIZER;
 
+pthread_cond_t carpenterLock;
+pthread_cond_t painterLock;
+pthread_cond_t decoratorLock;
+
+void* carpenter(void * ignored) {
+  pthread_mutex_lock(&lock);
+  //pthread_cond_wait(&painterLock, &lock2);
+  //pthread_cond_wait(&decoratorLock, &lock3);
   printf("starting carpentry\n");
+  pthread_mutex_unlock(&lock);
+
   sleep(1);
+
+  pthread_mutex_lock(&lock);
   printf("finished carpentry\n");
+  //pthread_cond_broadcast(&painterLock);
+  //pthread_cond_broadcast(&decoratorLock);
+  pthread_mutex_unlock(&lock);
   return NULL;
 }
 
 void* painter(void * ignored) {
-
+  pthread_mutex_lock(&lock2);
+  //pthread_cond_wait(&carpenterLock, &lock);
+  //pthread_cond_wait(&decoratorLock, &lock3);
   printf("starting painting\n");
+  pthread_mutex_unlock(&lock2);
+
   sleep(1);
+
+  pthread_mutex_lock(&lock2);
   printf("finished painting\n");
+  //pthread_cond_broadcast(&carpenterLock);
+  //pthread_cond_broadcast(&decoratorLock);
+  pthread_mutex_unlock(&lock2);
   return NULL;
 }
 
 void* decorator(void * ignored) {
-
+  pthread_mutex_lock(&lock3);
+  //pthread_cond_wait(&painterLock, &lock2);
+  //pthread_cond_wait(&carpenterLock, &lock);
   printf("starting decorating\n");
+  pthread_mutex_unlock(&lock3);
   sleep(1);
+
+  pthread_mutex_lock(&lock3);
   printf("finished decorating\n");
+  //pthread_cond_broadcast(&painterLock);
+  //pthread_cond_broadcast(&carpenterLock);
+  pthread_mutex_unlock(&lock3);
   return NULL;
 }
 
